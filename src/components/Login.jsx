@@ -13,13 +13,14 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useUser } from "../components/UserContext"; // UserContext'i import et
 
 const theme = createTheme();
-const BASE_URL="http://localhost:8080/api"
+const BASE_URL = "http://localhost:8080/api";
 
 function Login() {
-
   const navigate = useNavigate();
+  const { setUser } = useUser(); // Kullanıcı ID'sini güncellemek için useUser hook'unu kullan
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(""); // Kullanıcı adı veya şifre hatalı mesajı için state
@@ -29,19 +30,24 @@ function Login() {
 
     try {
       // Backend'e POST isteği gönder
-      const response = await axios.post(`${BASE_URL}/users/login`, {
+      const response = await axios.post(`${BASE_URL}/users/authenticate`, {
         username,
         password,
       });
 
       if (response.status === 200) {
-        // Giriş başarılıysa hesaplar sayfasına yönlendir
-        console.log(response.data);
-        
+        // Giriş başarılıysa kullanıcı ID'sini context'e kaydet
+        const userId = response.data.id;
+        console.log(userId); // Kullanıcı ID'sini backend'den al
+        setUser(userId);
+
+        // Kullanıcı ID'sini localStorage'a kaydet
+        localStorage.setItem("userId", userId);
+
+        // Hesaplar sayfasına yönlendir
         navigate("/accounts");
       }
     } catch (error) {
-
       console.error("Hata:", error); // Hata detaylarını kontrol edin
 
       if (error.response && error.response.status === 401) {
@@ -54,8 +60,8 @@ function Login() {
         setTimeout(() => setError(""), 1700); // 1.7 saniye sonra hata mesajını temizle
       }
     }
-        setUsername(""); // Formu temizle
-        setPassword(""); // Formu temizle
+    setUsername(""); // Formu temizle
+    setPassword(""); // Formu temizle
   };
 
   return (

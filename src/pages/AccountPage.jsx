@@ -1,11 +1,18 @@
-import React from 'react';
-import AccountList from '../components/AccountList';
+import React, { useState } from "react";
+import AccountList from "../components/AccountList";
+import Transactions from "../components/Transactions";
 
 function AccountPage() {
+  const [refresh, setRefresh] = useState(false);
+
+  const handleUpdate = () => {
+    setRefresh((prev) => !prev); // para gönderildiğinde ön yüze hemen yansımasını sağlar
+  };
+
   return (
     <div>
-      <h2>HESAPLARIM SAYFASI</h2>
-      <AccountList  />
+      <AccountList onUpdate={handleUpdate} />
+      <Transactions onUpdate={handleUpdate} />
     </div>
   );
 }
