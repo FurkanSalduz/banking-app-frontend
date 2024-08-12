@@ -40,13 +40,9 @@ const Transactions = ({ onUpdate }) => {
   }, [userId]);
 
   const handleTransfer = async () => {
-    if (
-      !recipientAccountNumber ||
-      !amount ||
-      !senderAccountNumber ||
-      !description
-    ) {
-      setError("Lütfen tüm alanları doldurun.");
+    if (!recipientAccountNumber || !amount || !senderAccountNumber) {
+      setError("Lütfen zorunlu alanları doldurun.");
+      setTimeout(() => setError(""), 1700);
       return;
     }
 
@@ -66,6 +62,7 @@ const Transactions = ({ onUpdate }) => {
           timestamp: new Date().toISOString(),
         }
       );
+
       if (response.status === 200) {
         setSuccess("Para transferi başarılı!");
         setError("");
@@ -78,17 +75,32 @@ const Transactions = ({ onUpdate }) => {
         if (onUpdate) {
           onUpdate(); // Güncellemeyi tetikler
         }
+        setTimeout(() => setSuccess(""), 1700);
       }
     } catch (error) {
       console.error("Transfer hatası:", error);
-      setError("Para transferi sırasında bir hata oluştu.");
+
+      // Hata mesajını backend'den al
+      const errorMessage = error.response?.data || "Bir hata oluştu.";
+
+      if (errorMessage === "Yetersiz bakiye") {
+        setError("Yetersiz Bakiye.");
+      } else if (errorMessage.message === "Target account not found") {
+        setError("Hedef hesap bulunamadı.");
+      } else {
+        setError(errorMessage);
+      }
+
+      setAmount("");
+
       setSuccess("");
+      setTimeout(() => setError(""), 1700);
     }
   };
 
   return (
-    <Container maxWidth="xl">
-      <Typography sx={{ mt: 4 }} variant="h4" gutterBottom>
+    <Container maxWidth="lg">
+      <Typography sx={{ mt: 4 }} variant="h5" gutterBottom>
         Para Transferi
       </Typography>
       {error && <Alert severity="error">{error}</Alert>}
@@ -96,7 +108,7 @@ const Transactions = ({ onUpdate }) => {
       <Box
         component="form"
         noValidate
-        sx={{ mt: 2, maxWidth: 600, mr: "auto" }}
+        sx={{ mt: 2, maxWidth: 500, mr: "auto" }}
       >
         <TextField
           label="Alıcı Hesap Numarası"
@@ -138,9 +150,9 @@ const Transactions = ({ onUpdate }) => {
           variant="contained"
           fullWidth
           sx={{
-            mt: 3,
+            mt: 2,
             mb: 2,
-            fontSize: 18,
+            fontSize: 16,
             bgcolor: "#007A3D",
             "&:hover": {
               bgcolor: "#007A3D", // Hover durumunda da yeşil kalacak

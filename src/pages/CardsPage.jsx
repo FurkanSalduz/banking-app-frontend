@@ -1,13 +1,13 @@
-import React from 'react'
-import CardList from '../components/CardList'
+// src/pages/CardsPage.jsx
+import React from "react";
+import CardList from "../components/CardList";
 
 function CardsPage() {
   return (
     <div>
-      Kartlarımın sayfası
-      <CardList/>
+      <CardList />
     </div>
-  )
+  );
 }
 
-export default CardsPage
+export default CardsPage;

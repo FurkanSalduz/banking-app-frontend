@@ -43,8 +43,8 @@ const AccountList = ({ onUpdate }) => {
   }, [onUpdate]);
 
   return (
-    <Container maxWidth="xl">
-      <Typography variant="h4" gutterBottom>
+    <Container maxWidth="lg">
+      <Typography variant="h5" gutterBottom>
         Hesaplarım
       </Typography>
       {loading ? (
@@ -52,7 +52,7 @@ const AccountList = ({ onUpdate }) => {
       ) : (
         <Grid container spacing={6}>
           {accounts.map((account) => (
-            <Grid item sm={12} md={6} key={account.id}>
+            <Grid item sm={12} md={5} key={account.id}>
               <Card sx={{ position: "relative" }}>
                 <CardContent>
                   <Box display="flex" flexDirection="column">
