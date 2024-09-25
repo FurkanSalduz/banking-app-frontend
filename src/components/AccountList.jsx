@@ -34,13 +34,7 @@ const AccountList = ({ onUpdate }) => {
 
   useEffect(() => {
     fetchAccounts();
-  }, [onUpdate]);
-
-  useEffect(() => {
-    if (onUpdate) {
-      onUpdate(fetchAccounts);
-    }
-  }, [onUpdate]);
+  }, [onUpdate]); // onUpdate bağımlılığı
 
   return (
     <Container maxWidth="lg">

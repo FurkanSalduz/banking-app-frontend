@@ -92,7 +92,6 @@ const Transactions = ({ onUpdate }) => {
       }
 
       setAmount("");
-
       setSuccess("");
       setTimeout(() => setError(""), 1700);
     }
@@ -108,7 +107,7 @@ const Transactions = ({ onUpdate }) => {
       <Box
         component="form"
         noValidate
-        sx={{ mt: 2, maxWidth: 500, mr: "auto" }}
+        sx={{ mt: 2, maxWidth: 450, mr: "auto" }}
       >
         <TextField
           label="Alıcı Hesap Numarası"

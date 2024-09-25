@@ -38,7 +38,7 @@ function Login() {
       if (response.status === 200) {
         // Giriş başarılıysa kullanıcı ID'sini context'e kaydet
         const userId = response.data.id;
-        console.log(userId); // Kullanıcı ID'sini backend'den al
+        // console.log(userId); 
         setUser(userId);
 
         // Kullanıcı ID'sini localStorage'a kaydet
